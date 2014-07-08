@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Blog Name</title>
+  <subtitle>Blog subtitle</subtitle>
+  <id>http://blog.url.com/</id>
+  <link href="http://blog.url.com/"/>
+  <link href="http://blog.url.com/feed.xml" rel="self"/>
+  <updated>2014-03-21T05:00:00Z</updated>
+  <author>
+    <name>Blog Author</name>
+  </author>
+  <entry>
+    <title>Build Your Own TwitterBot (An Awesome Ruby Intro)</title>
+    <link rel="alternate" href="/blog/2014/03/21/Twitter-Robot.html"/>
+    <id>/blog/2014/03/21/Twitter-Robot.html</id>
+    <published>2014-03-21T05:00:00Z</published>
+    <updated>2014-03-21T05:00:00Z</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <summary type="html">&lt;hr&gt;&lt;h4&gt;The Context&lt;/h4&gt;
+
+&lt;p&gt;You’ve started a Justin Bieber fan account on twitter, but creating content is just too much work.  Instead, you’ve decided to build a robot using the coding language &lt;strong&gt;ruby&lt;/strong&gt;, the &lt;strong&gt;Twitter API&lt;/strong&gt; and &lt;strong&gt;command line&lt;/strong&gt; to retweet the most recent JB...&lt;/p&gt;</summary>
+    <content type="html">&lt;hr&gt;
+
+&lt;h4&gt;The Context&lt;/h4&gt;
+
+&lt;p&gt;You&amp;rsquo;ve started a Justin Bieber fan account on twitter, but creating content is just too much work.  Instead, you&amp;rsquo;ve decided to build a robot using the coding language &lt;strong&gt;ruby&lt;/strong&gt;, the &lt;strong&gt;Twitter API&lt;/strong&gt; and &lt;strong&gt;command line&lt;/strong&gt; to retweet the most recent JB news for you.&lt;/p&gt;
+
+&lt;h4&gt;Prerequisites&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;- Have &lt;a href="https://www.ruby-lang.org/en/installation/"&gt;ruby&lt;/a&gt; installed&lt;/li&gt;
+&lt;li&gt;- Have a &lt;a href="http://www.twitter.com"&gt;twitter&lt;/a&gt; account&lt;/li&gt;
+&lt;li&gt;- In terminal, create a new ruby file (
+&lt;code&gt;
+$ touch twitterrobot.rb
+&lt;/code&gt;
+)* and open it in any &lt;a href="http://www.sublimetext.com"&gt;text editor&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;* Note: Any code following $ should be typed in your terminal (command line)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;The Code&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;1.&lt;/strong&gt; To access twitter&amp;rsquo;s database we have to ask, or &lt;em&gt;call&lt;/em&gt;, the Twitter API for specific data.  To call the Twitter API using ruby, we need a &lt;em&gt;ruby gem&lt;/em&gt;.  Let&amp;rsquo;s install that now.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;twitter&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Let&amp;rsquo;s also tell our ruby file that we&amp;rsquo;re going to be using this gem.  Add this to the top of your .rb file: &lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;twitter&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;2.&lt;/strong&gt; When we call the Twitter API, we have to be able to prove, or &lt;em&gt;authenticate&lt;/em&gt;, who we are.  Let&amp;rsquo;s configure twitter so that it can authenticate us by adding this block of code:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class="highlight ruby"&gt; &lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Twitter&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;REST&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Client&lt;/span&gt;&lt;span class="nf"&gt;.new&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+   &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.consumer_key&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Paste_Your_Key_Here&amp;quot;&lt;/span&gt;
+   &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.consumer_secret&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Paste_Your_Key_Here&amp;quot;&lt;/span&gt;
+   &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.access_token&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Paste_Your_Key_Here&amp;quot;&lt;/span&gt;
+   &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.access_token_secret&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Paste_Your_Key_Here&amp;quot;&lt;/span&gt;
+ &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;In the first line, notice that we&amp;rsquo;ve named the twitter API &amp;ldquo;client&amp;rdquo;.  We won&amp;rsquo;t break down the rest because it is unlikely that you will need to manipulate it outside of pasting in your keys.  Remember that keys are like passwords and you should never publish or save them anywhere.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;3.&lt;/strong&gt;  To get keys and tokens for your twitter account, head &lt;a href="http://apps.twitter.com"&gt;here&lt;/a&gt; and &amp;ldquo;Create New App&amp;rdquo;.  Use a social media URL if you don&amp;rsquo;t have a website.  Skip the callback URL- command line doesn&amp;rsquo;t need it.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Once you&amp;rsquo;ve created your app, navigate to the permissions tab, select &amp;lsquo;Read and Write&amp;rsquo; and update settings.  Next, click the &amp;ldquo;Test OAuth&amp;rdquo; button and all four keys will appear.  Paste them into the code from our previous step.  Make sure they&amp;rsquo;re surrounded by parentheses.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;4.&lt;/strong&gt;  Now we&amp;rsquo;re ready to make our call!  Let&amp;rsquo;s write out our objective in English before we try to write it in ruby.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;We want to search Twitter for the most recent tweets about Justin Bieber.&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Let&amp;rsquo;s make it even simpler.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;We want to search Twitter&lt;/strong&gt; &lt;strike&gt;for the most recent tweets about Justin Bieber.&lt;/strike&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Twitter is the subject of the sentence and search is the verb.  In ruby, subjects are called &lt;em&gt;objects&lt;/em&gt; and verbs are called &lt;em&gt;methods&lt;/em&gt;.  A method acts on an object in this format: 
+&lt;code&gt;
+object.method
+&lt;/code&gt;
+So our ruby should read:
+&lt;code&gt;
+twitter.search
+&lt;/code&gt;
+Much like English, we can include the details of the search in parentheses right after the word:
+&lt;code&gt;
+twitter.search(&amp;quot;justin bieber&amp;quot;)
+&lt;/code&gt;
+Let&amp;rsquo;s add another method and more detail before adding this line to our .rb file:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="n"&gt;twitter&lt;/span&gt;&lt;span class="nf"&gt;.search&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;justin bieber&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nf"&gt;.take&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;5.&lt;/strong&gt;  At this point, we have a solid call- our code is asking twitter to search it&amp;rsquo;s database and take the first ten tweets about Bieber.  Let&amp;rsquo;s go ahead and run our code:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;ruby&lt;/span&gt; &lt;span class="n"&gt;twitterrobot&lt;/span&gt;&lt;span class="nf"&gt;.rb&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Oops!  You probably have an error.  That&amp;rsquo;s because in step #2, we gave twitter a name- &amp;ldquo;client&amp;rdquo;.  Replace &amp;ldquo;twitter.search&amp;rdquo; with &amp;ldquo;client.search&amp;rdquo; and run your code again.&lt;/p&gt;
+
+&lt;p&gt;If command line popped up again and it looks like nothing happened, your search was successful!  If you got an error either google it, review the first 4 steps or leave a comment below.&lt;/p&gt;
+
+&lt;p&gt;As our code gets more complex, it&amp;rsquo;s going to be more and more important to pinpoint exactly where something has gone wrong.  Let&amp;rsquo;s add a few &amp;ldquo;puts&amp;rdquo; statements in our code.  Add the following line underneath
+&lt;code&gt;
+require &amp;quot;twitter&amp;quot;
+&lt;/code&gt;, and run your code again. &lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Starting Program&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Your terminal now tells you when the program starts.  Let&amp;rsquo;s add another after our call: &lt;/p&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Search Completed&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Now we know when the search completes (or doesn&amp;rsquo;t).  If you have an error authenticating, you&amp;rsquo;ll see &amp;ldquo;Starting Program&amp;rdquo;, but you&amp;rsquo;ll get an error before you see &amp;ldquo;Search Completed&amp;rdquo; because the Twitter Authentication comes before &amp;ldquo;Search Completed&amp;rdquo; in your .rb file.  Try misspelling &amp;ldquo;client&amp;rdquo; or something silly like that and run your code again to see how this works.  You can write any text in the puts statement- try customizing it.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;6.&lt;/strong&gt; Next, let&amp;rsquo;s actually work with the tweets we&amp;rsquo;ve gotten from our call.  We&amp;rsquo;re going to start by collecting our data and creating a &lt;em&gt;do-end block&lt;/em&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class="highlight ruby"&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="nf"&gt;.search&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;justin bieber&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nf"&gt;.take&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nf"&gt;.collect&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;tweet&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;This is inside a block&amp;quot;&lt;/span&gt;
+ &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Run your code.  You&amp;rsquo;ll see our puts statement 10 times.  This is because the search returns each of the 10 results one at a time and runs the code we&amp;rsquo;ve written inside the do-end block each time.&lt;/p&gt;
+
+&lt;p&gt;We&amp;rsquo;ve done one more thing in the code above- we&amp;rsquo;ve given a temporary name (&amp;ldquo;tweet&amp;rdquo;) to each individual search.  That name exists inside the do-end block, and we can use it to call the individual search.  Let&amp;rsquo;s try to puts the &amp;ldquo;tweet&amp;rdquo; instead of our text:&lt;/p&gt;
+&lt;pre class="highlight ruby"&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="nf"&gt;.search&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;justin bieber&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nf"&gt;.take&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nf"&gt;.collect&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;tweet&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="n"&gt;tweet&lt;/span&gt;
+ &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Run your code.  That&amp;rsquo;s weird- those don&amp;rsquo;t look like tweets.  That&amp;rsquo;s because &amp;ldquo;tweet&amp;rdquo; is just a name for the search- it isn&amp;rsquo;t the actual tweet.  Each search has many fields full of data, or &lt;em&gt;attributes&lt;/em&gt; attached to it.  Let&amp;rsquo;s call one of those attributes.  Change the line to
+ &lt;code&gt;
+ puts tweet.user
+&lt;/code&gt;
+ and run your code again.  &lt;/p&gt;
+
+&lt;p&gt;Success- we have the username of the author!  Try
+ &lt;code&gt;
+ puts tweet.text
+&lt;/code&gt;
+ and you should have the text of your tweet.  Another important one is
+ &lt;code&gt;
+ tweet.id
+&lt;/code&gt;
+ because it uniquely identifies the tweet in Twitter&amp;rsquo;s database.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;7.&lt;/strong&gt;  You may have noticed that you&amp;rsquo;re getting some funny tweet results- different languages or old tweets.  Let&amp;rsquo;s quickly fix that by adding a few more &lt;em&gt;parameters&lt;/em&gt; to our search:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="nf"&gt;.search&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;justin bieber&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:lang&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;en&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:result_type&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;recent&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nf"&gt;.take&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nf"&gt;.collect&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;tweet&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="n"&gt;tweet&lt;/span&gt;&lt;span class="nf"&gt;.id&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;All of these parameters, methods and field options can be found in the &lt;a href="http://rdoc.info/gems/twitter"&gt;gem documentation&lt;/a&gt;.  It can be overwhelming at first, so don&amp;rsquo;t worry if it confuses you.  As long as you understand the basics, you can run google searches and read tutorials to figure out what you need to know.&lt;/p&gt;
+
+&lt;p&gt;p.s. Try changing the language from &amp;ldquo;en&amp;rdquo; to &amp;ldquo;jp&amp;rdquo; for Japanese tweets!&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;8.&lt;/strong&gt;  It&amp;rsquo;s finally time to retweet!  To retweet, we&amp;rsquo;re asking to interact with Twitter&amp;rsquo;s database again, so we&amp;rsquo;ll follow a pattern similar to client.search:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="nf"&gt;.search&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;justin bieber&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:lang&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;en&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:result_type&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;recent&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nf"&gt;.take&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nf"&gt;.collect&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;tweet&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="nf"&gt;.retweet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tweet&lt;/span&gt;&lt;span class="nf"&gt;.id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;The detail included here is the tweet id, because that is the only way to uniquely identify the tweet in twitter&amp;rsquo;s database.&lt;/p&gt;
+
+&lt;p&gt;Run your code again.  Now open your browser and check out your twitter page- you should have ten newly-retweeted, jb-themed tweets!&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;9.&lt;/strong&gt;  We&amp;rsquo;re almost done!  If you start retweeting too many things too quickly, Twitter will no longer allow you access.  Let&amp;rsquo;s code a little break in and tell our server to sleep for 5 seconds.  Let&amp;rsquo;s also add a few puts statements in case anything goes wrong.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="nf"&gt;.search&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;justin bieber&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:lang&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;en&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:result_type&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;recent&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nf"&gt;.take&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nf"&gt;.collect&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;tweet&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+    &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Searching Twitter...&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="nf"&gt;.retweet&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tweet&lt;/span&gt;&lt;span class="nf"&gt;.id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Retweeted!&amp;quot;&lt;/span&gt;
+    &lt;span class="nb"&gt;sleep&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;h4&gt;And you&amp;rsquo;re DONE, congratulations!&lt;/h4&gt;
+
+&lt;p&gt;If you&amp;rsquo;re having trouble, you can find the final code &lt;a href="https://github.com/doaboa/rubyTwitterTutorials/blob/master/twitterrobot.rb"&gt;here&lt;/a&gt; for your reference, forking or editing.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;10.&lt;/strong&gt;  Feeling good?  Try a few of these challenges:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul&gt;
+&lt;li&gt;- Can you favorite a tweet in addition to retweeting it?&lt;/li&gt;
+&lt;li&gt;- Can you post a tweet you&amp;rsquo;ve written? (hint: this is separate from the client.search code block)&lt;/li&gt;
+&lt;li&gt;- Right now our Twitter robot only retweets when we run our code manually.  Can you figure out how to use a &lt;em&gt;scheduler&lt;/em&gt; to schedule re-tweeting sprees automatically?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;Questions?  Tweet me: @doaboa or comment below.&lt;/h3&gt;
+</content>
+  </entry>
+</feed>

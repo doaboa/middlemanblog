@@ -1,0 +1,406 @@
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]> <html class="no-js" lang="en"> <![endif]-->
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta name="copyright" content="" />
+    <link type="text/plain" rel="author" href="/humans.txt" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta http-equiv="cleartype" content="on">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Doa Jafri | Build Your Own TwitterBot (An Awesome Ruby Intro)</title>
+
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
+    
+
+    
+
+    <script src="/javascripts/modernizr.js" type="text/javascript"></script>
+
+    
+  </head>
+  <body class="blog blog_2014 blog_2014_03 blog_2014_03_21 blog_2014_03_21_Twitter-Robot">
+    
+    <div id="root">  
+      <!-- Logo & Top Nav -->
+      <nav class="top-bar">
+        <ul class="title-area">
+          <!-- Title Area -->
+          <li class="name">
+            <h1><a href="/">Doa Jafri</a></h1>
+          </li>
+          <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+          <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+        </ul>
+        <section class="top-bar-section">
+        <!-- Left Nav Section -->
+        <ul class="right">
+          
+          
+                  <li>
+          <a href='http://twitter.com/doaboa'>
+            <span class='hide-for-small'><i class='icon-twitter'></i>
+            </span><span class='show-for-small'>Twitter</span>
+          </a>
+        </li>
+
+                  <li>
+          <a href='http://linkedin.com/pub/doa-jafri/2a/771/524'>
+            <span class='hide-for-small'><i class='icon-linkedin'></i>
+            </span><span class='show-for-small'>LinkedIn</span>
+          </a>
+        </li>
+
+              
+                  <li>
+          <a href='http://github.com/doaboa'>
+            <span class='hide-for-small'><i class='icon-github'></i>
+            </span><span class='show-for-small'>Github</span>
+          </a>
+        </li>
+
+          <li class="divider"></li>
+          <!-- <li class="portfolio"><a href="/portfolio.html">Portfolio</a></li> -->
+          <li class="divider"></li>
+          
+          <li class="blog"><a href="/blog">Blog</a></li>
+        </ul>
+      </nav>
+      <!-- End Header and Nav -->
+
+      <!-- Main page container -->
+
+      <div class="main">
+        <div class="content">
+            <div class="row">
+  <article class="small-12 large-9 columns left">
+    <h3><center>
+      
+        Build Your Own TwitterBot (An Awesome Ruby Intro)
+      
+    </center>
+    </h3>
+
+    
+      <hr>
+
+<h4>The Context</h4>
+
+<p>You&rsquo;ve started a Justin Bieber fan account on twitter, but creating content is just too much work.  Instead, you&rsquo;ve decided to build a robot using the coding language <strong>ruby</strong>, the <strong>Twitter API</strong> and <strong>command line</strong> to retweet the most recent JB news for you.</p>
+
+<h4>Prerequisites</h4>
+
+<ul>
+<li>- Have <a href="https://www.ruby-lang.org/en/installation/">ruby</a> installed</li>
+<li>- Have a <a href="http://www.twitter.com">twitter</a> account</li>
+<li>- In terminal, create a new ruby file (
+<code>
+$ touch twitterrobot.rb
+</code>
+)* and open it in any <a href="http://www.sublimetext.com">text editor</a></li>
+<li>* Note: Any code following $ should be typed in your terminal (command line)</li>
+</ul>
+
+<h4>The Code</h4>
+
+<ol>
+<li><strong>1.</strong> To access twitter&rsquo;s database we have to ask, or <em>call</em>, the Twitter API for specific data.  To call the Twitter API using ruby, we need a <em>ruby gem</em>.  Let&rsquo;s install that now.</li>
+</ol>
+<pre class="highlight ruby"><span class="err">$</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">twitter</span>
+</pre>
+<p>Let&rsquo;s also tell our ruby file that we&rsquo;re going to be using this gem.  Add this to the top of your .rb file: </p>
+<pre class="highlight ruby"><span class="nb">require</span> <span class="s2">&quot;twitter&quot;</span>
+</pre>
+<ol>
+<li><strong>2.</strong> When we call the Twitter API, we have to be able to prove, or <em>authenticate</em>, who we are.  Let&rsquo;s configure twitter so that it can authenticate us by adding this block of code:</li>
+</ol>
+<pre class="highlight ruby"> <span class="n">client</span> <span class="o">=</span> <span class="no">Twitter</span><span class="o">::</span><span class="no">REST</span><span class="o">::</span><span class="no">Client</span><span class="nf">.new</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+   <span class="n">config</span><span class="nf">.consumer_key</span> <span class="o">=</span> <span class="s2">&quot;Paste_Your_Key_Here&quot;</span>
+   <span class="n">config</span><span class="nf">.consumer_secret</span> <span class="o">=</span> <span class="s2">&quot;Paste_Your_Key_Here&quot;</span>
+   <span class="n">config</span><span class="nf">.access_token</span> <span class="o">=</span> <span class="s2">&quot;Paste_Your_Key_Here&quot;</span>
+   <span class="n">config</span><span class="nf">.access_token_secret</span> <span class="o">=</span> <span class="s2">&quot;Paste_Your_Key_Here&quot;</span>
+ <span class="k">end</span>
+</pre>
+<p>In the first line, notice that we&rsquo;ve named the twitter API &ldquo;client&rdquo;.  We won&rsquo;t break down the rest because it is unlikely that you will need to manipulate it outside of pasting in your keys.  Remember that keys are like passwords and you should never publish or save them anywhere.</p>
+
+<ol>
+<li><strong>3.</strong>  To get keys and tokens for your twitter account, head <a href="http://apps.twitter.com">here</a> and &ldquo;Create New App&rdquo;.  Use a social media URL if you don&rsquo;t have a website.  Skip the callback URL- command line doesn&rsquo;t need it.</li>
+</ol>
+
+<p>Once you&rsquo;ve created your app, navigate to the permissions tab, select &lsquo;Read and Write&rsquo; and update settings.  Next, click the &ldquo;Test OAuth&rdquo; button and all four keys will appear.  Paste them into the code from our previous step.  Make sure they&rsquo;re surrounded by parentheses.</p>
+
+<ol>
+<li><strong>4.</strong>  Now we&rsquo;re ready to make our call!  Let&rsquo;s write out our objective in English before we try to write it in ruby.</li>
+</ol>
+
+<blockquote>
+<p><strong>We want to search Twitter for the most recent tweets about Justin Bieber.</strong></p>
+</blockquote>
+
+<p>Let&rsquo;s make it even simpler.</p>
+
+<blockquote>
+<p><strong>We want to search Twitter</strong> <strike>for the most recent tweets about Justin Bieber.</strike></p>
+</blockquote>
+
+<p>Twitter is the subject of the sentence and search is the verb.  In ruby, subjects are called <em>objects</em> and verbs are called <em>methods</em>.  A method acts on an object in this format: 
+<code>
+object.method
+</code>
+So our ruby should read:
+<code>
+twitter.search
+</code>
+Much like English, we can include the details of the search in parentheses right after the word:
+<code>
+twitter.search(&quot;justin bieber&quot;)
+</code>
+Let&rsquo;s add another method and more detail before adding this line to our .rb file:</p>
+<pre class="highlight ruby"><span class="n">twitter</span><span class="nf">.search</span><span class="p">(</span><span class="s2">&quot;justin bieber&quot;</span><span class="p">)</span><span class="nf">.take</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre>
+<ol>
+<li><strong>5.</strong>  At this point, we have a solid call- our code is asking twitter to search it&rsquo;s database and take the first ten tweets about Bieber.  Let&rsquo;s go ahead and run our code:</li>
+</ol>
+<pre class="highlight ruby"><span class="err">$</span> <span class="n">ruby</span> <span class="n">twitterrobot</span><span class="nf">.rb</span>
+</pre>
+<p>Oops!  You probably have an error.  That&rsquo;s because in step #2, we gave twitter a name- &ldquo;client&rdquo;.  Replace &ldquo;twitter.search&rdquo; with &ldquo;client.search&rdquo; and run your code again.</p>
+
+<p>If command line popped up again and it looks like nothing happened, your search was successful!  If you got an error either google it, review the first 4 steps or leave a comment below.</p>
+
+<p>As our code gets more complex, it&rsquo;s going to be more and more important to pinpoint exactly where something has gone wrong.  Let&rsquo;s add a few &ldquo;puts&rdquo; statements in our code.  Add the following line underneath
+<code>
+require &quot;twitter&quot;
+</code>, and run your code again. </p>
+<pre class="highlight ruby"><span class="nb">puts</span> <span class="s2">&quot;Starting Program&quot;</span>
+</pre>
+<p>Your terminal now tells you when the program starts.  Let&rsquo;s add another after our call: </p>
+<pre class="highlight ruby"><span class="nb">puts</span> <span class="s2">&quot;Search Completed&quot;</span>
+</pre>
+<p>Now we know when the search completes (or doesn&rsquo;t).  If you have an error authenticating, you&rsquo;ll see &ldquo;Starting Program&rdquo;, but you&rsquo;ll get an error before you see &ldquo;Search Completed&rdquo; because the Twitter Authentication comes before &ldquo;Search Completed&rdquo; in your .rb file.  Try misspelling &ldquo;client&rdquo; or something silly like that and run your code again to see how this works.  You can write any text in the puts statement- try customizing it.</p>
+
+<ol>
+<li><strong>6.</strong> Next, let&rsquo;s actually work with the tweets we&rsquo;ve gotten from our call.  We&rsquo;re going to start by collecting our data and creating a <em>do-end block</em>.</li>
+</ol>
+<pre class="highlight ruby"> <span class="n">client</span><span class="nf">.search</span><span class="p">(</span><span class="s2">&quot;justin bieber&quot;</span><span class="p">)</span><span class="nf">.take</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="nf">.collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">tweet</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="s2">&quot;This is inside a block&quot;</span>
+ <span class="k">end</span>
+</pre>
+<p>Run your code.  You&rsquo;ll see our puts statement 10 times.  This is because the search returns each of the 10 results one at a time and runs the code we&rsquo;ve written inside the do-end block each time.</p>
+
+<p>We&rsquo;ve done one more thing in the code above- we&rsquo;ve given a temporary name (&ldquo;tweet&rdquo;) to each individual search.  That name exists inside the do-end block, and we can use it to call the individual search.  Let&rsquo;s try to puts the &ldquo;tweet&rdquo; instead of our text:</p>
+<pre class="highlight ruby"> <span class="n">client</span><span class="nf">.search</span><span class="p">(</span><span class="s2">&quot;justin bieber&quot;</span><span class="p">)</span><span class="nf">.take</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="nf">.collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">tweet</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="n">tweet</span>
+ <span class="k">end</span>
+</pre>
+<p>Run your code.  That&rsquo;s weird- those don&rsquo;t look like tweets.  That&rsquo;s because &ldquo;tweet&rdquo; is just a name for the search- it isn&rsquo;t the actual tweet.  Each search has many fields full of data, or <em>attributes</em> attached to it.  Let&rsquo;s call one of those attributes.  Change the line to
+ <code>
+ puts tweet.user
+</code>
+ and run your code again.  </p>
+
+<p>Success- we have the username of the author!  Try
+ <code>
+ puts tweet.text
+</code>
+ and you should have the text of your tweet.  Another important one is
+ <code>
+ tweet.id
+</code>
+ because it uniquely identifies the tweet in Twitter&rsquo;s database.</p>
+
+<ol>
+<li><strong>7.</strong>  You may have noticed that you&rsquo;re getting some funny tweet results- different languages or old tweets.  Let&rsquo;s quickly fix that by adding a few more <em>parameters</em> to our search:</li>
+</ol>
+<pre class="highlight ruby"><span class="n">client</span><span class="nf">.search</span><span class="p">(</span><span class="s2">&quot;justin bieber&quot;</span><span class="p">,</span> <span class="ss">:lang</span> <span class="o">=&gt;</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="ss">:result_type</span> <span class="o">=&gt;</span> <span class="s2">&quot;recent&quot;</span><span class="p">)</span><span class="nf">.take</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="nf">.collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">tweet</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="n">tweet</span><span class="nf">.id</span>
+<span class="k">end</span>
+</pre>
+<p>All of these parameters, methods and field options can be found in the <a href="http://rdoc.info/gems/twitter">gem documentation</a>.  It can be overwhelming at first, so don&rsquo;t worry if it confuses you.  As long as you understand the basics, you can run google searches and read tutorials to figure out what you need to know.</p>
+
+<p>p.s. Try changing the language from &ldquo;en&rdquo; to &ldquo;jp&rdquo; for Japanese tweets!</p>
+
+<ol>
+<li><strong>8.</strong>  It&rsquo;s finally time to retweet!  To retweet, we&rsquo;re asking to interact with Twitter&rsquo;s database again, so we&rsquo;ll follow a pattern similar to client.search:</li>
+</ol>
+<pre class="highlight ruby"><span class="n">client</span><span class="nf">.search</span><span class="p">(</span><span class="s2">&quot;justin bieber&quot;</span><span class="p">,</span> <span class="ss">:lang</span> <span class="o">=&gt;</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="ss">:result_type</span> <span class="o">=&gt;</span> <span class="s2">&quot;recent&quot;</span><span class="p">)</span><span class="nf">.take</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="nf">.collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">tweet</span><span class="o">|</span>
+    <span class="n">client</span><span class="nf">.retweet</span><span class="p">(</span><span class="n">tweet</span><span class="nf">.id</span><span class="p">)</span>
+<span class="k">end</span>
+</pre>
+<p>The detail included here is the tweet id, because that is the only way to uniquely identify the tweet in twitter&rsquo;s database.</p>
+
+<p>Run your code again.  Now open your browser and check out your twitter page- you should have ten newly-retweeted, jb-themed tweets!</p>
+
+<ol>
+<li><strong>9.</strong>  We&rsquo;re almost done!  If you start retweeting too many things too quickly, Twitter will no longer allow you access.  Let&rsquo;s code a little break in and tell our server to sleep for 5 seconds.  Let&rsquo;s also add a few puts statements in case anything goes wrong.</li>
+</ol>
+<pre class="highlight ruby"><span class="n">client</span><span class="nf">.search</span><span class="p">(</span><span class="s2">&quot;justin bieber&quot;</span><span class="p">,</span> <span class="ss">:lang</span> <span class="o">=&gt;</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="ss">:result_type</span> <span class="o">=&gt;</span> <span class="s2">&quot;recent&quot;</span><span class="p">)</span><span class="nf">.take</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="nf">.collect</span> <span class="k">do</span> <span class="o">|</span><span class="n">tweet</span><span class="o">|</span>
+    <span class="nb">puts</span> <span class="s2">&quot;Searching Twitter...&quot;</span>
+    <span class="n">client</span><span class="nf">.retweet</span><span class="p">(</span><span class="n">tweet</span><span class="nf">.id</span><span class="p">)</span>
+    <span class="nb">puts</span> <span class="s2">&quot;Retweeted!&quot;</span>
+    <span class="nb">sleep</span> <span class="mi">5</span>
+<span class="k">end</span>
+</pre>
+<h4>And you&rsquo;re DONE, congratulations!</h4>
+
+<p>If you&rsquo;re having trouble, you can find the final code <a href="https://github.com/doaboa/rubyTwitterTutorials/blob/master/twitterrobot.rb">here</a> for your reference, forking or editing.</p>
+
+<ol>
+<li><strong>10.</strong>  Feeling good?  Try a few of these challenges:</li>
+</ol>
+
+<ul>
+<li>- Can you favorite a tweet in addition to retweeting it?</li>
+<li>- Can you post a tweet you&rsquo;ve written? (hint: this is separate from the client.search code block)</li>
+<li>- Right now our Twitter robot only retweets when we run our code manually.  Can you figure out how to use a <em>scheduler</em> to schedule re-tweeting sprees automatically?</li>
+</ul>
+
+<h3>Questions?  Tweet me: @doaboa or comment below.</h3>
+
+    
+
+    
+
+    
+      <ul class="read_next">
+        <li>&nbsp;</li>
+        <li>&nbsp;</li>
+      </ul>
+
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        var disqus_shortname = "hellodoa";
+        (function() {
+         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+         dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+         })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+  <aside class="small-12 large-3 columns right">
+    <ul class="credit">
+      <li class="time">Posted on <time datetime="2014-03-21">Friday Mar 21, 2014</time></li>
+    </ul>
+    <ul class="tags">
+      
+        <li><a class="tiny button secondary round" href="/blog/tags/tutorial.html">tutorial</a></li>
+      
+        <li><a class="tiny button secondary round" href="/blog/tags/ruby.html">ruby</a></li>
+      
+        <li><a class="tiny button secondary round" href="/blog/tags/sferik.html">sferik</a></li>
+      
+        <li><a class="tiny button secondary round" href="/blog/tags/twitter.html">Twitter</a></li>
+      
+        <li><a class="tiny button secondary round" href="/blog/tags/api.html">API</a></li>
+      
+        <li><a class="tiny button secondary round" href="/blog/tags/gem.html">gem</a></li>
+      
+        <li><a class="tiny button secondary round" href="/blog/tags/easy.html">easy</a></li>
+      
+        <li><a class="tiny button secondary round" href="/blog/tags/integration.html">integration</a></li>
+      
+        <li><a class="tiny button secondary round" href="/blog/tags/configure.html">configure</a></li>
+      
+        <li><a class="tiny button secondary round" href="/blog/tags/retweet.html">retweet</a></li>
+      
+        <li><a class="tiny button secondary round" href="/blog/tags/robot.html">robot</a></li>
+      
+    </ul>
+  </aside>
+</div>
+
+
+
+        </div>
+      </div>
+      <div id="root_footer"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="row" id="footer">
+      <div class="content">
+        <p>Made by <a href="http://github.com/doaboa">Doa Jafri</a> in sunny Austin, Texas. </p>
+      </div>
+    </footer>
+
+    <!--[if lt IE 9]>
+    <div id="ie-warning-overlay">
+      <div id="ie-warning">
+        <h1>Did you know that your copy of Internet Explorer is terribly out of date?</h1>
+        <p>
+          To get the best possible experience using our website, we recommend that you upgrade to the latest version or use another web browser. 
+          Any of the following will provide a superior experience, not only on this site, but across the web.
+        </p>
+        <p>Just click one of the icons below to get to the download page.</p>
+        <ul>
+          <li>
+            <a href="http://microsoft.com/ie">
+              <img alt="Download Internet Explorer" width="100" height="100" src="/images/browser_ie.gif" />
+              <p>Internet Explorer 9+</p>
+            </a>
+          </li>
+          <li>
+            <a href="http://mozilla.org/firefox">
+              <img alt="Download Firefox" width="100" height="100" src="/images/browser_firefox.gif" />
+              <p>Firefox</p>
+            </a>
+          </li>
+          <li>
+            <a href="http://google.com/chrome">
+              <img alt="Download Chrome" width="100" height="100" src="/images/browser_chrome.gif" />
+              <p>Google Chrome</p>
+            </a>
+          </li>
+          <li>
+            <a href="http://apple.com/safari">
+              <img alt="Download Safari" width="100" height="100" src="/images/browser_safari.gif" />
+              <p>Safari</p>
+            </a>
+          </li>
+          <li>
+            <a href="http://opera.com">
+              <img alt="Download Opera" width="100" height="100" src="/images/browser_opera.gif" />
+              <p>Opera</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <![endif]-->
+
+    <script>
+      document.write('<script src=' +
+        ('__proto__' in {} ? "/javascripts/zepto.js" : "/javascripts/jquery.js") +
+        '><\/script>')
+    </script>
+
+    <!-- Javascript -->
+    <script src="/javascripts/application.js" type="text/javascript"></script>
+    
+
+    <script>
+      $(document).ready(function () {
+        
+        $(document).foundation();
+      });
+
+      // TODO: Set your Google Analytics code here
+      var _gaq=[['_setAccount','UA-111111111-11'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'));
+    </script>
+
+  </body>
+</html>
+

@@ -1,0 +1,17 @@
+- 
+  name: Refind Denim
+  url: http://refind.herokuapp.com
+  screenshot: refind.png
+  featured: true
+  description: |
+                 A static website built from scratch in two days for a new denim line.
+# - 
+#   name: RailsGirls ATX
+#   url: http://railsgirlsatx.org
+#   source_link: http://github.com/railsgirlsatx/site
+#   screenshot: railsgirls-screenshot.png
+#   featured: false
+#   description: |
+#                  This is a very long description.
+
+#                  It has multiple paragraphs.    
